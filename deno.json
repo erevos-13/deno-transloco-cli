@@ -14,7 +14,6 @@
   },
   "noImplicitUseStrict": false,
   "compilerOptions": {
-    "allowJs": true,
     "strict": true,
     "checkJs": true,
     "lib": [
