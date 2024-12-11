@@ -135,3 +135,5 @@ translate.json
 .vscode/launch.json
 
 en-GB.json
+
+./tests

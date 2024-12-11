@@ -1,10 +1,17 @@
 import { getTranslationFile } from "../files-manager/index.ts";
 import { URL } from "../utils/constants.ts";
-export const postToEndpoint = async (fileToSend: string, token: string) => {
+export const postToEndpoint = async (
+  fileToSend: string,
+  token: string,
+  locale: string,
+) => {
   try {
     const translationFile = await getTranslationFile(fileToSend);
+    if (!translationFile) {
+      throw new Error("Translation file not found");
+    }
     const url =
-      `${URL}/import/json?key=${token}&locale=en&ignore-existing=true&tag-absent=obsolete&format=JSON`;
+      `${URL}/import/json?key=${token}&locale=${locale}&ignore-existing=true&tag-absent=obsolete&format=JSON`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -14,11 +21,6 @@ export const postToEndpoint = async (fileToSend: string, token: string) => {
     });
 
     if (!response.ok) {
-      console.error(
-        "%cError during post response is not ok",
-        "color: red",
-        JSON.stringify(response, null, 4),
-      );
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 

@@ -29,10 +29,10 @@ export const getAllTranslation = async (token: string, filter: string[]) => {
       console.log("%cError getting all translation", "color: red");
       throw new Error("Error getting all translation");
     }
+    console.log("%cAll translation downloaded", "color: green");
     if (allTranslation.ok) {
       return await allTranslation.json();
     }
-    console.log("%cAll translation downloaded", "color: green");
     return allTranslation;
   } catch (error) {
     console.error(`Error getting all translation: ${error}`);
@@ -44,7 +44,7 @@ export const getFromEndpoint = async (
   locale: string,
   token: string,
   filter: string[],
-) => {
+): Promise<Uint8Array | null> => {
   try {
     console.log(
       "Getting from loco",
@@ -69,8 +69,8 @@ export const getFromEndpoint = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const jsonTranslation = await response.json();
-    console.log("%cFile downloaded", "color: green");
-    return jsonTranslation;
+    const encoder = new TextEncoder();
+    return encoder.encode(JSON.stringify(jsonTranslation));
   } catch (error) {
     console.error("%cError during get from loco", "color: red", error);
     throw error;

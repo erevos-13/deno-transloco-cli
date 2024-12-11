@@ -1,20 +1,49 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --allow-net --allow-read --allow-write --allow-env main.ts",
+    "build": "deno compile --allow-net --allow-read --allow-write --allow-env --output locoCli main.ts",
+    "build-win": "deno compile --allow-net --allow-read --allow-write --allow-env --target x86_64-pc-windows-msvc --output locoCli.exe main.ts",
+    "test": "deno test --allow-net --allow-read --allow-write --allow-env -- --token testtestttsdfsfddsfs  --translate ./translate.json --extract ./i18n --locale en  --filename en-GB --filter '!obsolete'"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1",
+    "/": "./",
+    "./": "./",
+    "@std/assert": "jsr:@std/assert@^1.0.9",
     "@std/cli": "jsr:@std/cli@^1.0.8",
     "@std/path": "jsr:@std/path@^1.0.8"
   },
+  "noImplicitUseStrict": false,
   "compilerOptions": {
-    "checkJs": true,
-    "types": [
-      "jsr:@std/path"
-    ],
     "allowJs": true,
+    "strict": true,
+    "checkJs": true,
     "lib": [
-      "deno.window"
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable",
+      "deno.ns",
+      "deno.unstable",
+      "esnext"
     ]
+  },
+  "lint": {
+    "include": [
+      "src/"
+    ],
+    "exclude": [
+      "src/testdata/",
+      "src/fixtures/**/*.ts"
+    ],
+    "rules": {
+      "tags": [
+        "recommended"
+      ],
+      "include": [
+        "ban-untagged-todo"
+      ],
+      "exclude": [
+        "no-unused-vars"
+      ]
+    }
   }
 }
